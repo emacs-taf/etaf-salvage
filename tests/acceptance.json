@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "load_path": [
+    ".",
+    "../../etaf-gamekit",
+    "../../etaf-ui",
+    "../../etaf",
+    "../../ebox",
+    "../../ecss"
+  ],
+  "support": [],
+  "cases": [
+    {
+      "name": "etaf-salvage-ui-routes-input-to-native-rules",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Map activation reaches native pathfinding while intrinsic dimensions survive resize."
+    },
+    {
+      "name": "etaf-salvage-invalid-actions-preserve-the-world",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Illegal coordinates and failed actions preserve a paused native world."
+    },
+    {
+      "name": "etaf-salvage-expedition-can-complete-and-restart",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Navigation, skills, objectives, extraction and restart work through the public game interface."
+    },
+    {
+      "name": "etaf-salvage-damage-repair-and-defeat-stay-authoritative",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Native damage, repair and defeat are authoritative."
+    },
+    {
+      "name": "etaf-salvage-snapshot-recovery-is-atomic",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Valid snapshots restore progress; malformed snapshots preserve the current game."
+    },
+    {
+      "name": "etaf-salvage-expeditions-are-independent",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "One running expedition cannot advance or change another."
+    },
+    {
+      "name": "etaf-salvage-themes-preserve-the-expedition",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Switching between the light and dark palettes preserves the world, route and canvas metrics."
+    }
+  ]
+}
