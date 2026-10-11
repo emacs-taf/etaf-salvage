@@ -37,6 +37,8 @@ Switching the palette later never restarts the Godot expedition.")
     :salvage-drone-bg "#F3D6DB" :salvage-drone-fg "#B23A52"
     :salvage-core-bg "#F7E8C0" :salvage-core-fg "#9A6B1F"
     :salvage-dock-bg "#D8F0E4" :salvage-dock-fg "#2F7A57"
+    :salvage-pilot-ink "#0E7C7B" :salvage-drone-ink "#B23A52"
+    :salvage-core-ink "#8A6118" :salvage-dock-ink "#2F7A57"
     :salvage-selected-bg "#BBD8E8")
   "Daylight palette for the derelict station; it does not alter the Emacs theme.")
 
@@ -60,6 +62,8 @@ Switching the palette later never restarts the Godot expedition.")
     :salvage-drone-bg "#472B3A" :salvage-drone-fg "#FF8C9D"
     :salvage-core-bg "#3D3929" :salvage-core-fg "#F4CE7C"
     :salvage-dock-bg "#173E3C" :salvage-dock-fg "#83E5C5"
+    :salvage-pilot-ink "#6CE4D4" :salvage-drone-ink "#FF8C9D"
+    :salvage-core-ink "#F4CE7C" :salvage-dock-ink "#83E5C5"
     :salvage-selected-bg "#375C73")
   "Deep-space palette for the derelict station; it does not alter the Emacs theme.")
 
@@ -207,10 +211,10 @@ Switching the palette later never restarts the Godot expedition.")
     (flex :width 'stretch :justify-content 'center
       (etaf-salvage--deck :session session :selected selected))
     (row :item-gap (if narrow '(ch 1) '(ch 3))
-      (etaf-label :text (if narrow "◉ YOU" "◉ SURVEYOR") :color (etaf-salvage--color :salvage-pilot-fg))
-      (etaf-label :text "▲ DRONE" :color (etaf-salvage--color :salvage-drone-fg))
-      (etaf-label :text (if narrow "◆ CORE" "◆ POWER CORE") :color (etaf-salvage--color :salvage-core-fg))
-      (etaf-label :text (if narrow "▣ DOCK" "▣ EXTRACTION") :color (etaf-salvage--color :salvage-dock-fg)))
+      (etaf-label :text (if narrow "◉ YOU" "◉ SURVEYOR") :color (etaf-salvage--color :salvage-pilot-ink))
+      (etaf-label :text "▲ DRONE" :color (etaf-salvage--color :salvage-drone-ink))
+      (etaf-label :text (if narrow "◆ CORE" "◆ POWER CORE") :color (etaf-salvage--color :salvage-core-ink))
+      (etaf-label :text (if narrow "▣ DOCK" "▣ EXTRACTION") :color (etaf-salvage--color :salvage-dock-ink)))
     (etaf-label :if (and (not compact) (not narrow)) :text "Click deck to plot a route · Select an object to inspect it" :variant 'muted)))
 
 (etaf-define-component etaf-salvage--metrics (&key session compact narrow)
@@ -279,7 +283,7 @@ Switching the palette later never restarts the Godot expedition.")
                :on-change (lambda (value) (setf (etaf-value tab) value)))
     (column :if (equal (etaf-value tab) "cargo") :item-gap (if compact '(lh 0) '(lh 1))
       (flex :justify-content 'space-between :width 'stretch
-        (etaf-label :text "◆ Power cores" :color (etaf-salvage--color :salvage-core-fg))
+        (etaf-label :text "◆ Power cores" :color (etaf-salvage--color :salvage-core-ink))
         (etaf-badge :text (format "%d / 3" (plist-get (etaf-value pilot) :cores)) :variant 'warning))
       (flex :justify-content 'space-between :width 'stretch
         (etaf-label :text "+ Repair kits")
