@@ -2,7 +2,7 @@
 
 A real-time exploration and extraction game with a native ETAF interface and a
 headless [Godot](https://godotengine.org) simulation, built as an independent
-[GameKit](https://forgejo.vhkd.top/emacs-taf/etaf-gamekit) application. Recover
+[GameKit](https://github.com/emacs-taf/etaf-gamekit) application. Recover
 three power cores and return to the extraction dock; avoid or disable security
 drones, manage hull and energy, and use repair kits along the way.
 
@@ -38,12 +38,12 @@ connection.
 ## Installation
 
 ```sh
-git clone https://forgejo.vhkd.top/emacs-taf/ecss.git
-git clone https://forgejo.vhkd.top/emacs-taf/ebox.git
-git clone https://forgejo.vhkd.top/emacs-taf/etaf.git
-git clone https://forgejo.vhkd.top/emacs-taf/etaf-ui.git
-git clone https://forgejo.vhkd.top/emacs-taf/etaf-gamekit.git
-git clone https://forgejo.vhkd.top/emacs-taf/etaf-salvage.git
+git clone https://github.com/emacs-taf/ecss.git
+git clone https://github.com/emacs-taf/ebox.git
+git clone https://github.com/emacs-taf/etaf.git
+git clone https://github.com/emacs-taf/etaf-ui.git
+git clone https://github.com/emacs-taf/etaf-gamekit.git
+git clone https://github.com/emacs-taf/etaf-salvage.git
 make -C etaf-gamekit engine
 ```
 
@@ -99,7 +99,7 @@ surfaces; the [manual](docs/manual.md) describes them.
 - [Salvage Station manual](docs/manual.md) — gameplay, window adaptation and
   GUI acceptance.
 - [Package entry](etaf-salvage.el) — the supported API inventory.
-- [GameKit](https://forgejo.vhkd.top/emacs-taf/etaf-gamekit) — the shared game
+- [GameKit](https://github.com/emacs-taf/etaf-gamekit) — the shared game
   framework, its adapters and backend installation.
 
 ## License
