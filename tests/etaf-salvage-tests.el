@@ -60,8 +60,16 @@
         (etaf-dispatch-event runtime 'salvage-tile-4-6 'press)
         (etaf-salvage-test--wait session
           (lambda () (equal (car (last (plist-get (etaf-gamekit-view session :world) :route))) '(6 4))))
-        (etaf-runtime-refit runtime 900 34)
-        (should (equal size (etaf-host-ref-size runtime 'salvage-map)))))))
+        (dolist (rows '(70 46 34))
+          (etaf-runtime-refit runtime 900 rows)
+          (let* ((table (etaf-host-ref-size runtime 'salvage-root))
+                 (bounds (etaf-host-ref-bounds runtime 'salvage-root))
+                 (surplus (max 0 (- rows (cdr table))))
+                 (top (with-current-buffer (etaf-gamekit-buffer session)
+                        (1- (line-number-at-pos (car bounds))))))
+            (should (<= (abs (- top (* 0.4 surplus))) 1)))
+          (let ((map-size (etaf-host-ref-size runtime 'salvage-map)))
+            (should (equal size map-size))))))))
 
 (ert-deftest etaf-salvage-themes-preserve-the-expedition ()
   "Light/dark switching preserves the world, route and fixed canvas metrics."

@@ -380,6 +380,7 @@ Switching the palette later never restarts the Godot expedition.")
   :view
   (flex :width 'stretch :height 'stretch :min-width '(ch 76) :min-height '(lh 30)
         :flex-direction 'column :align-items 'center :background-color (etaf-salvage--color :ui-bg)
+    (box :flex-grow 2 :flex-basis '(lh 0) :min-height '(lh 0))
     (column :ref 'salvage-root :width 'stretch :max-width '(ch 120)
             :min-width '(ch 76) :min-height '(lh 30) :flex-shrink 0
             :padding (if (or (etaf-value dense) (etaf-value stacked)) '((lh 0) (ch 2)) '((lh 1) (ch 2)))
@@ -441,7 +442,8 @@ Switching the palette later never restarts the Godot expedition.")
           (etaf-label :text "Recover ◆ cores in all three sectors, then reach ▣ extraction." :wrap-mode 'word)
           (etaf-label :text "W A S D steer. Click empty deck to navigate around bulkheads. Click an object to inspect it." :wrap-mode 'word)
           (etaf-label :text "P pauses the simulation. 1 fires an EMP within five tiles. 2 protects your hull for five seconds." :wrap-mode 'word)
-          (etaf-label :text "Use Cargo for repairs. Save and Load preserve the expedition. A restored run starts paused." :wrap-mode 'word))))))
+          (etaf-label :text "Use Cargo for repairs. Save and Load preserve the expedition. A restored run starts paused." :wrap-mode 'word))))
+    (box :flex-grow 3 :flex-basis '(lh 0) :min-height '(lh 0))))
 
 (defun etaf-salvage--view (session)
   "Compose the game from the public ETAF and GameKit contracts."

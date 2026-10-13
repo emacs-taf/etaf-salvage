@@ -46,6 +46,10 @@ Loading validates a snapshot before changing the world, resumes paused and
 clears navigation routes. Snapshots retain position, cargo, enemies, resources,
 cooldowns, score, elapsed time and events. Closing makes no implicit save.
 
+The expedition interface is horizontally centered and sits slightly above the
+vertical center, sharing surplus height 2:3 above and below. Short windows
+remove this outer space before clipping; panels do not stretch to fill it.
+
 The map stays 32×18 cells, each two character columns by one text row. Resizing
 reflows surrounding panels without stretching the world. Narrow tall windows
 put panels below the map; narrow short windows expose them through **Panels**.
