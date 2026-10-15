@@ -143,11 +143,11 @@ Screenshots require visual review; use the performance driver for latency."
              :id "help" :screenshot t
              :execute (lambda (context)
                         (etaf-dispatch-event (etaf-salvage-gui--runtime context) 'salvage-help 'press))
-             :settled-p (lambda (context) (string-match-p "FLIGHT MANUAL" (etaf-salvage-gui--text context))))
+             :settled-p (lambda (context) (string-match-p "快捷键 · 只读" (etaf-salvage-gui--text context))))
             (etaf-gui-verifier-action-create
              :id "close-help" :screenshot t
              :execute (lambda (_context) (execute-kbd-macro (kbd "<escape>")))
-             :settled-p (lambda (context) (not (string-match-p "FLIGHT MANUAL" (etaf-salvage-gui--text context)))))
+             :settled-p (lambda (context) (not (string-match-p "快捷键 · 只读" (etaf-salvage-gui--text context)))))
             (etaf-salvage-gui--play-action
              "recover-first-core" '(salvage-route-target salvage-pause)
              (lambda (view) (= (plist-get (plist-get view :pilot) :cores) 1)))

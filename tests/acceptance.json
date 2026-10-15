@@ -11,6 +11,16 @@
   "support": [],
   "cases": [
     {
+      "name": "etaf-salvage-help-entries-share-read-only-modal",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "F1, Help and question mark open the same in-buffer searchable help, preserve the paused world and restore focus without extra buffers or windows."
+    },
+    {
+      "name": "etaf-salvage-help-preserves-live-simulation",
+      "file": "tests/etaf-salvage-tests.el",
+      "purpose": "Live backend frames keep help's opening scope and focus; opening and closing help do not pause or resume the expedition."
+    },
+    {
       "name": "etaf-salvage-ui-routes-input-to-native-rules",
       "file": "tests/etaf-salvage-tests.el",
       "purpose": "Map activation reaches native pathfinding while intrinsic dimensions survive resize."

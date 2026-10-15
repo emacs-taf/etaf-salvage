@@ -177,5 +177,101 @@
         (etaf-salvage-test--wait first (lambda () (= 7 (plist-get (etaf-salvage-test--pilot (etaf-gamekit-observation first)) :x))))
         (should (equal before (etaf-gamekit-observation second)))))))
 
+(defun etaf-salvage-test--keys (session keys)
+  "Send native KEYS to SESSION's displayed buffer."
+  (with-current-buffer (etaf-gamekit-buffer session)
+    (execute-kbd-macro (kbd keys))))
+
+(defun etaf-salvage-test--help-visible-p (runtime)
+  "Whether RUNTIME exposes the shared help's close control."
+  (cl-some (lambda (entry)
+             (equal (plist-get (cdr entry) :aria-label) "关闭帮助"))
+           (etaf-runtime-host-props-entries runtime)))
+
+(ert-deftest etaf-salvage-help-entries-share-read-only-modal ()
+  "F1, Help and question mark share searchable help without changing the run."
+  (save-window-excursion
+    (etaf-salvage-test--with-game session
+      (let* ((buffer (etaf-gamekit-buffer session))
+             (runtime (etaf-runtime-for-buffer buffer)))
+        (switch-to-buffer buffer)
+        (etaf-refit runtime (selected-window))
+        (etaf-salvage-test--wait
+         session (lambda () (etaf-host-ref-size runtime 'salvage-map)))
+        (dolist (entry '("<f1>" button "?"))
+          (etaf-focus runtime 'salvage-help)
+          (let ((focus (etaf-focused-host-ref runtime))
+                (windows (window-list)) (buffers (buffer-list))
+                (before (etaf-gamekit-observation session)))
+            (if (eq entry 'button) (etaf-activate runtime)
+              (etaf-salvage-test--keys session entry))
+            (let* ((visible (etaf-salvage-test--help-visible-p runtime))
+                   (data (etaf-help-data runtime))
+                   (title (plist-get data :title))
+                   (notes (string-join (plist-get data :notes) " "))
+                   (bindings (apply #'append
+                                    (mapcar (lambda (group) (plist-get group :entries))
+                                            (plist-get data :groups))))
+                   (move (cl-find "d" bindings :key (lambda (item) (plist-get item :key))
+                                  :test #'equal)))
+              (should visible)
+              (should (equal title "Salvage Station"))
+              (should (string-match-p "Recover.*cores" notes))
+              (should (equal (plist-get move :label) "Move east"))
+              (etaf-salvage-test--keys session "? d p 1 2 C-v")
+              (let ((snapshot (etaf-help-data runtime)))
+                (should (equal data snapshot))))
+            (should (equal windows (window-list)))
+            (should (equal buffers (buffer-list)))
+            (should (eq buffer (window-buffer)))
+            (etaf-salvage-test--keys session "/ d ? <escape>")
+            (let ((visible (etaf-salvage-test--help-visible-p runtime))
+                  (editing (not (null (etaf-text-input-active-p runtime)))))
+              (should visible)
+              (should-not editing))
+            (etaf-salvage-test--keys session "<escape>")
+            (etaf-salvage-test--wait session)
+            (let ((after (etaf-gamekit-observation session))
+                  (restored (etaf-focused-host-ref runtime))
+                  (closed-again (etaf-help-close runtime)))
+              (should (equal before after))
+              (should (equal focus restored))
+              (should-not closed-again))))))))
+
+(ert-deftest etaf-salvage-help-preserves-live-simulation ()
+  "Help keeps its scope and focus through live frames without changing pause policy."
+  (save-window-excursion
+    (etaf-salvage-test--with-game session
+      (let* ((buffer (etaf-gamekit-buffer session))
+             (runtime (etaf-runtime-for-buffer buffer)))
+        (switch-to-buffer buffer)
+        (etaf-refit runtime (selected-window))
+        (etaf-salvage-test--wait
+         session (lambda () (etaf-host-ref-size runtime 'salvage-map)))
+        (etaf-focus runtime 'salvage-help)
+        (etaf-salvage-test--act session "pause")
+        (etaf-salvage-test--wait
+         session (lambda () (not (eq t (plist-get (etaf-gamekit-view session :mission) :paused)))))
+        (etaf-salvage-test--keys session "<f1>")
+        (let ((focus (etaf-focused-host-ref runtime))
+              (snapshot (etaf-help-data runtime))
+              (seconds (etaf-salvage-test--value session :mission :seconds)))
+          (etaf-salvage-test--wait
+           session (lambda () (> (plist-get (etaf-gamekit-view session :mission) :seconds)
+                                  seconds)))
+          (let ((visible (etaf-salvage-test--help-visible-p runtime))
+                (after-focus (etaf-focused-host-ref runtime))
+                (after-data (etaf-help-data runtime))
+                (paused (etaf-salvage-test--value session :mission :paused)))
+            (should visible)
+            (should (equal focus after-focus))
+            (should (equal snapshot after-data))
+            (should-not (eq t paused)))
+          (etaf-salvage-test--keys session "<escape>")
+          (let ((restored (etaf-focused-host-ref runtime))
+                (paused (etaf-salvage-test--value session :mission :paused)))
+            (should (eq restored 'salvage-help))
+            (should-not (eq t paused))))))))
+
 (provide 'etaf-salvage-tests)
 ;;; etaf-salvage-tests.el ends here

@@ -33,9 +33,18 @@ dialogs and all presentation.
 | 1 / EMP | Disable drones within five tiles; costs 20 energy, four-second cooldown |
 | 2 / Shield | Protect the hull for five seconds; costs 25 energy |
 | Cargo → Repair | Use one of two kits to restore up to 40 hull |
-| F1 / Help | Open the flight manual |
+| ? / F1 / Help | Open searchable controls and flight notes in the current buffer |
 | T / Light–Dark | Switch between the light daylight and dark deep-space palettes |
 | Save / Load | Choose an explicit local snapshot path |
+
+Help is a read-only modal in the expedition buffer; it neither splits the
+window nor opens a second application. It shows the effective bindings and
+flight notes, with two columns in wide windows and a scrolling column in narrow
+ones. `/` starts search; Escape first leaves search editing, then closes help.
+Clicking the shade also closes it and restores focus without activating the
+covered game. Opening or closing help does not pause or resume the simulation:
+use tactical pause before reading when needed. The compact **Panels** dialog
+also closes when its shade is clicked.
 
 `etaf-salvage-appearance` selects the initial palette: `auto` (the default)
 follows the frame's background mode, or set `light`/`dark` before calling

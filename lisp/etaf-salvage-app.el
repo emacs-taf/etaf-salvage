@@ -365,7 +365,7 @@ Switching the palette later never restarts the Godot expedition.")
                                                  etaf-salvage--dark-theme etaf-salvage--light-theme))
                                    :test #'equal))
              (ready (etaf-computed (lambda () (equal (etaf-gamekit-view session :schema) "salvage/1"))))
-             (selected (etaf-ref "pilot")) (help (etaf-ref nil)) (tools (etaf-ref nil))
+             (selected (etaf-ref "pilot")) (tools (etaf-ref nil))
              (cargo-tab (etaf-ref "cargo"))
              (viewport (etaf-computed
                         (lambda () (let ((size (etaf-viewport)))
@@ -381,7 +381,13 @@ Switching the palette later never restarts the Godot expedition.")
   (flex :width 'stretch :height 'stretch :min-width '(ch 76) :min-height '(lh 30)
         :flex-direction 'column :align-items 'center :background-color (etaf-salvage--color :ui-bg)
     (box :flex-grow 2 :flex-basis '(lh 0) :min-height '(lh 0))
-    (column :ref 'salvage-root :width 'stretch :max-width '(ch 120)
+    (column :ref 'salvage-root :aria-label "Salvage Station"
+            :help '("Recover ◆ cores in all three sectors, then reach ▣ extraction."
+                    "Click empty deck to navigate around bulkheads. Click an object to inspect it."
+                    "EMP disables drones within five tiles. Shield protects your hull for five seconds."
+                    "Use Cargo for repairs. Save and Load preserve the expedition. A restored run starts paused."
+                    "Help does not pause or resume the simulation. Pause before reading if you need time to plan.")
+            :width 'stretch :max-width '(ch 120)
             :min-width '(ch 76) :min-height '(lh 30) :flex-shrink 0
             :padding (if (or (etaf-value dense) (etaf-value stacked)) '((lh 0) (ch 2)) '((lh 1) (ch 2)))
             :item-gap (if (etaf-value dense) '(lh 0) '(lh 1))
@@ -397,7 +403,7 @@ Switching the palette later never restarts the Godot expedition.")
                          "Toggle light and dark palette")
                    (list "1" (lambda () (etaf-salvage--act session "pulse")) "EMP pulse")
                    (list "2" (lambda () (etaf-salvage--act session "shield")) "Shield")
-                   (list "<f1>" (lambda () (setf (etaf-value help) t)) "Flight manual"))
+                   (list "<f1>" #'etaf-help "Flight manual"))
       (flex :width 'stretch :justify-content 'space-between
         (column
           (etaf-label :text "NEXUS / SALVAGE STATION" :color (etaf-salvage--color :ui-accent) :variant 'strong)
@@ -416,7 +422,7 @@ Switching the palette later never restarts the Godot expedition.")
           (etaf-button :if (etaf-value drawer) :label "Panels" :ref 'salvage-show-panels :variant 'secondary
                        :on-press (lambda () (setf (etaf-value tools) t)))
           (etaf-button :label (if (etaf-value narrow) "Help" "Help · F1") :variant 'ghost :ref 'salvage-help
-                       :on-press (lambda () (setf (etaf-value help) t)))))
+                       :on-press #'etaf-help)))
       (etaf-label :if (not (etaf-value ready)) :text "Preparing expedition…" :variant 'muted)
       (etaf-salvage--metrics :if (etaf-value ready) :session session :compact (etaf-value dense) :narrow (etaf-value narrow))
       (grid :if (etaf-value ready) :ref 'salvage-body :width 'stretch
@@ -435,14 +441,7 @@ Switching the palette later never restarts the Godot expedition.")
       (etaf-dialog :open (and (etaf-value ready) (etaf-value drawer) (etaf-value tools))
                    :title "EXPEDITION CONSOLE" :width '(ch 72) :compact t
                    :on-close (lambda () (setf (etaf-value tools) nil))
-        (etaf-salvage--sidebar :session session :selected selected :active cargo-tab :horizontal t :compact t))
-      (etaf-dialog :open help :title "FLIGHT MANUAL" :width '(ch 68) :compact t
-                   :on-close (lambda () (setf (etaf-value help) nil))
-        (column :item-gap '(lh 1)
-          (etaf-label :text "Recover ◆ cores in all three sectors, then reach ▣ extraction." :wrap-mode 'word)
-          (etaf-label :text "W A S D steer. Click empty deck to navigate around bulkheads. Click an object to inspect it." :wrap-mode 'word)
-          (etaf-label :text "P pauses the simulation. 1 fires an EMP within five tiles. 2 protects your hull for five seconds." :wrap-mode 'word)
-          (etaf-label :text "Use Cargo for repairs. Save and Load preserve the expedition. A restored run starts paused." :wrap-mode 'word))))
+        (etaf-salvage--sidebar :session session :selected selected :active cargo-tab :horizontal t :compact t)))
     (box :flex-grow 3 :flex-basis '(lh 0) :min-height '(lh 0))))
 
 (defun etaf-salvage--view (session)

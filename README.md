@@ -76,7 +76,7 @@ the application's own entry file.
 | `1` or EMP | Disable drones within five tiles; costs 20 energy |
 | `2` or Shield | Protect the hull for five seconds; costs 25 energy |
 | Cargo → Repair | Use one of two kits to restore up to 40 hull |
-| `F1` or Help | Open the flight manual |
+| `?`, `F1` or Help | Open searchable controls and flight notes in the current buffer |
 | `T` or Light–Dark | Switch between the light daylight and dark deep-space palettes |
 | Save / Load | Choose an explicit local snapshot path |
 
