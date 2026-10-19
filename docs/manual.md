@@ -9,7 +9,7 @@ Install GameKit, ETAF, etaf-ui and GameKit's Godot runtime, then add the
 application directory to `load-path`:
 
 ```elisp
-(add-to-list 'load-path "/path/to/etaf-games/etaf-salvage")
+(add-to-list 'load-path "/path/to/emacs-taf/etaf-salvage")
 (require 'etaf-salvage)
 (etaf-salvage-open)
 ```
