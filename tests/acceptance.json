@@ -2,11 +2,11 @@
   "schema": 1,
   "load_path": [
     ".",
-    "../../etaf-gamekit",
-    "../../etaf-ui",
-    "../../etaf",
-    "../../ebox",
-    "../../ecss"
+    "../etaf-gamekit",
+    "../etaf-ui",
+    "../etaf",
+    "../ebox",
+    "../ecss"
   ],
   "support": [],
   "cases": [
